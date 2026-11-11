@@ -94,7 +94,11 @@
       var type = button.dataset.tableRequest; var message = type === 'yeu_cau_thanh_toan' ? 'Gửi yêu cầu thanh toán đến thu ngân?' : 'Gọi nhân viên đến bàn?';
       if (!window.confirm(message)) { return; }
       button.disabled = true;
-      window.TableTap.api('table-requests', { body: { type: type, content: '' } }).then(function (response) { window.TableTap.toast(response.message); }).catch(function (error) { window.TableTap.toast(error.message, 'error'); }).finally(function () { button.disabled = false; });
+      window.TableTap.api('table-requests', { body: { type: type, content: '' } }).then(function (response) { if (type === 'yeu_cau_thanh_toan') {
+          window.location.assign(window.APP_URL + '/table-payment');
+          return;
+        }
+        window.TableTap.toast(response.message); }).catch(function (error) { window.TableTap.toast(error.message, 'error'); }).finally(function () { button.disabled = false; });
     });
   });
 

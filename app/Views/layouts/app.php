@@ -13,9 +13,14 @@
 </head>
 <body class="app-shell">
 <aside class="sidebar" id="sidebar">
-    <a class="brand" href="<?= url('dashboard') ?>"><span class="brand-mark">T</span><span>TableTap</span></a>
+    <a class="brand" href="<?= url() ?>"><span class="brand-mark">T</span><span>TableTap</span></a>
     <nav class="sidebar-nav" aria-label="Điều hướng chính">
+        <?php if (!Auth::hasRole('kitchen')): ?>
         <a class="nav-link" href="<?= url('dashboard') ?>" data-nav="dashboard"><i data-lucide="layout-dashboard"></i><span>Tổng quan</span></a>
+        <?php endif; ?>
+        <?php if (Auth::hasRole(array('admin', 'manager', 'cashier'))): ?>
+            <a class="nav-link" href="<?= e(url('billing')) ?>"><i data-lucide="receipt-text"></i><span>Thu ngân</span></a>
+        <?php endif; ?>
         <?php if (Auth::hasRole(array('admin', 'manager'))): ?>
             <div class="nav-heading">Vận hành menu</div>
             <a class="nav-link" href="<?= url('admin/categories') ?>"><i data-lucide="tags"></i><span>Danh mục</span></a>

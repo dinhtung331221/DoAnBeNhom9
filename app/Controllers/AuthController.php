@@ -12,7 +12,7 @@ class AuthController
     public function loginForm()
     {
         if (Auth::check()) {
-            header('Location: ' . url('dashboard'));
+            header('Location: ' . url());
             exit;
         }
         View::render('auth/login', array('title' => 'Đăng nhập'), 'layouts/auth');
@@ -30,8 +30,7 @@ class AuthController
             flash('error', 'Tên đăng nhập hoặc mật khẩu không đúng.');
             $this->redirect('login');
         }
-        $role = Auth::user()['role'];
-        $this->redirect($role === 'kitchen' ? 'kitchen' : 'dashboard');
+        $this->redirect('');
     }
 
     public function registerForm()

@@ -1,5 +1,5 @@
 <section class="kitchen-toolbar"><div class="kitchen-legend"><span><i class="dot dot-pending"></i>Chờ làm</span><span><i class="dot dot-preparing"></i>Đang làm</span><span><i class="dot dot-ready"></i>Sẵn sàng</span></div><button class="button button-secondary" onclick="location.reload()"><i data-lucide="refresh-cw"></i>Làm mới</button></section>
-<section class="kitchen-board">
+<section class="kitchen-board" data-kitchen-board>
 <?php foreach (array('pending' => 'Chờ chế biến', 'preparing' => 'Đang chế biến', 'ready' => 'Sẵn sàng phục vụ') as $status => $label): ?>
     <?php $statusItems = array_values(array_filter($items, function ($item) use ($status) { return $item['trang_thai'] === $status; })); ?>
     <div class="kitchen-column column-<?= e($status) ?>"><div class="kitchen-column-heading"><div><i class="dot dot-<?= e($status) ?>"></i><h2><?= e($label) ?></h2></div><span><?= count($statusItems) ?></span></div><div class="kitchen-items">

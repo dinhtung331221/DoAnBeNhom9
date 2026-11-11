@@ -161,3 +161,29 @@ button { cursor: pointer; }
   .kitchen-toolbar { align-items: flex-start; gap: 12px; }.kitchen-legend { flex-wrap: wrap; gap: 8px 13px; }.data-table { min-width: 720px; }
 }
 @media (max-width: 380px) { .menu-grid { grid-template-columns: 1fr; } .stats-grid { grid-template-columns: 1fr; } }
+
+/* Checkout and printable receipt */
+.billing-panel { padding: clamp(1rem, 3vw, 1.75rem); margin-block: 1rem; }
+.billing-panel h1, .billing-panel h2 { margin-top: 0; }
+.billing-customer { max-width: 840px; margin: 1.5rem auto; padding-inline: 1rem; }
+.billing-actions { display: flex; flex-wrap: wrap; gap: .75rem; align-items: end; margin-block: 1rem; }
+.billing-actions .field { margin: 0; }
+.billing-row { display: flex; flex-wrap: wrap; gap: .35rem 1rem; justify-content: space-between;
+  border-top: 1px solid #e3ddd5; padding: .8rem 0; }
+.billing-alert { background: #fff1e9; color: #8a291d; padding: .85rem 1rem; border-radius: 8px; }
+.billing-totals div { display: flex; justify-content: space-between; gap: 1rem; padding: .35rem 0; }
+.billing-totals dd { margin: 0; }
+.billing-qr { display: flex; flex-wrap: wrap; gap: 1.25rem; align-items: center;
+  border-top: 1px solid #e3ddd5; padding-top: 1rem; }
+.billing-qr img { display: block; width: 240px; max-width: 100%; height: auto; }
+.billing-confirm { margin-top: 1rem; border-top: 1px solid #e3ddd5; padding-top: 1rem; }
+.billing-confirm .field { max-width: 28rem; }
+@media print {
+  body:has(#receipt) { display: block; background: white; color: black; }
+  body:has(#receipt) :is(.sidebar, .topbar, .no-print, .toast-region) { display: none !important; }
+  body:has(#receipt) :is(.main-content, .page-content, .billing-customer) {
+    display: block; width: auto; max-width: none; margin: 0; padding: 0; }
+  #receipt { border: 0; box-shadow: none; margin: 0; padding: 0; }
+  #receipt .table-wrap { overflow: visible; }
+  #receipt tr { break-inside: avoid; }
+}
