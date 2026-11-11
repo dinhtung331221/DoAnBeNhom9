@@ -12,11 +12,17 @@ class PageController
     public function home()
     {
         if (Auth::check()) {
-            header('Location: ' . url(Auth::hasRole('kitchen') ? 'kitchen' : 'dashboard'));
+            header('Location: ' . url(Auth::hasRole('customer') ? 'welcome' : (Auth::hasRole('kitchen') ? 'kitchen' : 'dashboard')));
         } else {
             header('Location: ' . url('login'));
         }
         exit;
+    }
+
+    public function welcome()
+    {
+        Auth::requireRole('customer');
+        View::render('menu/welcome', array('title' => 'Chào mừng'), 'layouts/customer');
     }
 
     public function dashboard()

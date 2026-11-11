@@ -15,7 +15,10 @@ class ApiController
 {
     public function dispatch($path, Request $request)
     {
-        if ($request->method() !== 'GET' && !$request->validateCsrf()) {
+        if ($request->method() !== 'POST') {
+            Response::error('Phương thức không được hỗ trợ.', 405);
+        }
+        if (!$request->validateCsrf()) {
             Response::error('Phiên làm việc không hợp lệ. Hãy tải lại trang.', 419);
         }
 
@@ -246,6 +249,7 @@ class ApiController
         }
         try {
             $order = (new OrderService())->createOrder($table, $request->input('items', array()), $request->input('note', ''));
+            $_SESSION['billing_session'][$table['ban_id']] = $order['session_id'];
             Response::success($order, 'Bếp đã nhận được đơn của bạn.', 201);
         } catch (\RuntimeException $exception) {
             Response::error($exception->getMessage(), 422);
@@ -260,7 +264,9 @@ class ApiController
             Response::error('Mã QR không còn hiệu lực.', 403);
         }
         try {
-            $id = (new OrderService())->requestService($table, $request->input('type', ''), $request->input('content', ''));
+            $result = (new OrderService())->requestService($table, $request->input('type', ''), $request->input('content', ''));
+            $_SESSION['billing_session'][$table['ban_id']] = $result['session_id'];
+            $id = $result['id'];
             Response::success(array('id' => $id), 'Yêu cầu đã được gửi.', 201);
         } catch (\RuntimeException $exception) {
             Response::error($exception->getMessage(), 422);

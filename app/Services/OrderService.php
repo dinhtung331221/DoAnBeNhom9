@@ -101,6 +101,24 @@ class OrderService
         $pdo->beginTransaction();
         try {
             $session = $this->findOrCreateSession($pdo, (int) $table['ban_id']);
+            if ($type === 'yeu_cau_thanh_toan') {
+                $check = $pdo->prepare("SELECT COUNT(*) FROM chi_tiet_don_hang c JOIN don_hang d ON d.id = c.don_hang_id
+                    WHERE d.phien_ban_id = ? AND c.trang_thai <> 'cancelled' AND NOT EXISTS
+                    (SELECT 1 FROM chi_tiet_hoa_don l JOIN hoa_don h ON h.id = l.hoa_don_id
+                     WHERE l.chi_tiet_don_hang_id = c.id AND h.trang_thai = 'paid')");
+                $check->execute(array($session['id']));
+                if (!(int) $check->fetchColumn()) {
+                    throw new RuntimeException('Bàn chưa có món cần thanh toán.');
+                }
+                $existing = $pdo->prepare("SELECT id FROM yeu_cau_ban WHERE phien_ban_id = ?
+                    AND loai_yeu_cau = 'yeu_cau_thanh_toan' AND trang_thai IN ('pending','processing') LIMIT 1");
+                $existing->execute(array($session['id']));
+                $requestId = $existing->fetchColumn();
+                if ($requestId) {
+                    $pdo->commit();
+                    return array('id' => (int) $requestId, 'session_id' => (int) $session['id']);
+                }
+            }
             $statement = $pdo->prepare(
                 'INSERT INTO yeu_cau_ban (phien_ban_id, loai_yeu_cau, noi_dung) VALUES (:phien_ban_id, :loai, :noi_dung)'
             );
@@ -109,8 +127,9 @@ class OrderService
                 $pdo->prepare("UPDATE ban_an SET trang_thai = 'waiting_payment' WHERE id = :id")
                     ->execute(array('id' => $table['ban_id']));
             }
+            $id = (int) $pdo->lastInsertId();
             $pdo->commit();
-            return (int) $pdo->lastInsertId();
+            return array('id' => $id, 'session_id' => (int) $session['id']);
         } catch (\Exception $exception) {
             $pdo->rollBack();
             throw $exception;
@@ -153,6 +172,12 @@ class OrderService
 
     private function findOrCreateSession($pdo, $tableId)
     {
+        $table = $pdo->prepare('SELECT trang_thai FROM ban_an WHERE id = ? FOR UPDATE');
+        $table->execute(array($tableId));
+        $status = $table->fetchColumn();
+        if (!$status || $status === 'maintenance') {
+            throw new RuntimeException('Bàn hiện không nhận yêu cầu.');
+        }
         $statement = $pdo->prepare("SELECT id, ma_phien FROM phien_ban WHERE ban_id = :ban_id AND trang_thai = 'open' ORDER BY id DESC LIMIT 1 FOR UPDATE");
         $statement->execute(array('ban_id' => $tableId));
         $session = $statement->fetch();

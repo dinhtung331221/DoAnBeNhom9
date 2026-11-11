@@ -3,20 +3,22 @@
 require_once dirname(__DIR__) . '/app/bootstrap.php';
 
 use App\Controllers\ApiController;
+use App\Controllers\BillingController;
 use App\Controllers\AuthController;
 use App\Controllers\PageController;
 use App\Core\Request;
 
 $request = new Request();
 $uriPath = parse_url(isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '/', PHP_URL_PATH);
-$scriptDirectory = str_replace('\\', '/', dirname(isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : '/'));
-if ($scriptDirectory !== '/' && $scriptDirectory !== '.' && strpos($uriPath, $scriptDirectory) === 0) {
-    $uriPath = substr($uriPath, strlen($scriptDirectory));
+$basePath = rtrim((string) parse_url(app_config('url'), PHP_URL_PATH), '/');
+if ($basePath !== '' && ($uriPath === $basePath || strpos($uriPath, $basePath . '/') === 0)) {
+    $uriPath = substr($uriPath, strlen($basePath));
 }
 $path = trim($uriPath, '/');
 $method = $request->method();
 
 $pages = new PageController();
+$billing = new BillingController();
 $auth = new AuthController();
 
 if (strpos($path, 'api/') === 0) {
@@ -29,6 +31,10 @@ $routes = array(
         '' => array($pages, 'home'),
         'login' => array($auth, 'loginForm'),
         'register' => array($auth, 'registerForm'),
+        'billing' => array($billing, 'index'),
+        'table-payment' => array($billing, 'customer'),
+        'invoice' => array($billing, 'detail'),
+        'welcome' => array($pages, 'welcome'),
         'dashboard' => array($pages, 'dashboard'),
         'admin/categories' => array($pages, 'categories'),
         'admin/products' => array($pages, 'products'),
@@ -39,6 +45,9 @@ $routes = array(
         'kitchen' => array($pages, 'kitchen'),
     ),
     'POST' => array(
+        'billing/create' => array($billing, 'create'),
+        'billing/confirm' => array($billing, 'confirm'),
+        'billing/cancel' => array($billing, 'cancel'),
         'login' => array($auth, 'login'),
         'register' => array($auth, 'register'),
         'logout' => array($auth, 'logout'),

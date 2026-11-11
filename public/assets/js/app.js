@@ -118,12 +118,38 @@
     });
   });
 
-  document.querySelectorAll('[data-kitchen-status]').forEach(function (button) {
-    button.addEventListener('click', function () {
-      button.disabled = true; button.classList.add('is-loading');
-      api('kitchen/status', { body: { item_id: Number(button.dataset.itemId), status: button.dataset.kitchenStatus } }).then(function () { window.location.reload(); }).catch(function (error) { toast(error.message, 'error'); button.disabled = false; });
+  var kitchenBoard = document.querySelector('[data-kitchen-board]');
+  if (kitchenBoard) {
+    var busy = false;
+    function refreshKitchen() {
+      if (busy || document.hidden) { return; }
+      busy = true;
+      fetch(window.location.href, { cache: 'no-store' }).then(function (response) {
+        return response.ok ? response.text() : '';
+      }).then(function (html) {
+        var page = new DOMParser().parseFromString(html, 'text/html');
+        var board = page.querySelector('[data-kitchen-board]');
+        if (board) {
+          kitchenBoard.innerHTML = board.innerHTML;
+          icons();
+        }
+      }).catch(function () {}).finally(function () { busy = false; });
+    }
+
+    kitchenBoard.addEventListener('click', function (event) {
+      var button = event.target.closest('[data-kitchen-status]');
+      if (!button || button.disabled) { return; }
+      button.disabled = true;
+      api('kitchen/status', { body: { item_id: Number(button.dataset.itemId), status: button.dataset.kitchenStatus } })
+        .then(function () { window.location.reload(); })
+        .catch(function (error) { toast(error.message, 'error'); button.disabled = false; });
     });
-  });
+    window.setInterval(function () {
+      if (!kitchenBoard.querySelector('button:disabled') && !kitchenBoard.contains(document.activeElement)) {
+        refreshKitchen();
+      }
+    }, 5000);
+  }
 
   document.querySelectorAll('.qr-canvas[data-qr-value]').forEach(function (container) {
     if (window.QRCode && container.dataset.qrValue) { new window.QRCode(container, { text: container.dataset.qrValue, width: 168, height: 168, correctLevel: window.QRCode.CorrectLevel.H }); }

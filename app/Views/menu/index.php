@@ -23,7 +23,7 @@
     <?php endforeach; ?>
     </section>
 </main>
-<nav class="customer-bottom-nav"><a class="is-active" href="#"><i data-lucide="utensils"></i><span>Menu</span></a><a href="<?= url('cart') ?>"><i data-lucide="shopping-bag"></i><span>Giỏ hàng</span><b data-cart-count>0</b></a><button data-table-request="yeu_cau_thanh_toan"><i data-lucide="credit-card"></i><span>Thanh toán</span></button></nav>
+<nav class="customer-bottom-nav"><a class="is-active" href="#"><i data-lucide="utensils"></i><span>Menu</span></a><a href="<?= url('cart') ?>"><i data-lucide="shopping-bag"></i><span>Giỏ hàng</span><b data-cart-count>0</b></a><a href="<?= e(url('table-payment')) ?>"><i data-lucide="credit-card"></i><span>Thanh toán</span></a></nav>
 <dialog class="modal product-picker" id="productPicker"><form method="dialog" class="modal-form" id="productPickerForm">
     <div class="modal-heading"><div><span class="eyebrow">CHỌN TÙY CHỌN</span><h2 data-picker-name></h2></div><button class="icon-button" value="cancel" aria-label="Đóng"><i data-lucide="x"></i></button></div>
     <div class="picker-sizes" data-picker-sizes></div>
