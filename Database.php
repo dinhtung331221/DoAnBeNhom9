@@ -1,41 +1,39 @@
 <?php
-class Database {
-    private $host = "localhost";
-    private $username = "root";
-    private $password = "";
-    private $dbname = "kiemtralai";
-    private $conn;
 
-    // Hàm khởi tạo – tự động kết nối
-    public function __construct() {
-        $this->conn = new mysqli($this->host, $this->username, $this->password, $this->dbname);
-        if ($this->conn->connect_error) {
-            die("Kết nối thất bại: " . $this->conn->connect_error);
-        }
-        // Thiết lập bộ mã UTF-8
-        $this->conn->set_charset("utf8");
+/**
+ * Lop tuong thich cho ma cu. Code moi su dung App\Core\Database truc tiep.
+ */
+require_once __DIR__ . '/app/bootstrap.php';
+
+class Database
+{
+    private $connection;
+
+    public function __construct()
+    {
+        $this->connection = App\Core\Database::connection();
     }
 
-    // Truy vấn SELECT – trả về mảng dữ liệu
-    public function select($sql) {
-        $result = $this->conn->query($sql);
-        $data = [];
-        if ($result && $result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                $data[] = $row;
-            }
-        }
-        return $data;
+    public function select($sql, $parameters = array())
+    {
+        $statement = $this->connection->prepare($sql);
+        $statement->execute($parameters);
+        return $statement->fetchAll();
     }
 
-    // Thực thi lệnh INSERT, UPDATE, DELETE
-    public function execute($sql) {
-        return $this->conn->query($sql);
+    public function execute($sql, $parameters = array())
+    {
+        $statement = $this->connection->prepare($sql);
+        return $statement->execute($parameters);
     }
 
-    // Hàm ngắt kết nối
-    public function close() {
-        $this->conn->close();
+    public function connection()
+    {
+        return $this->connection;
+    }
+
+    public function close()
+    {
+        $this->connection = null;
     }
 }
-?>

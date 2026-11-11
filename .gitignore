@@ -1,0 +1,8 @@
+/.env
+/public/uploads/products/*
+!/public/uploads/products/.gitkeep
+/storage/logs/*.log
+!/storage/logs/.gitkeep
+/storage/sessions/*
+!/storage/sessions/.gitkeep
+

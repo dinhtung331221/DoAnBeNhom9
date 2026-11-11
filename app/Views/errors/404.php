@@ -1,0 +1,2 @@
+<!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Không tìm thấy</title><link rel="stylesheet" href="<?= asset('assets/css/app.css') ?>"></head>
+<body class="status-page"><div><span class="status-code">404</span><h1>Không tìm thấy trang</h1><p>Đường dẫn này không tồn tại hoặc đã được di chuyển.</p><a class="button button-primary" href="<?= url() ?>">Về trang chính</a></div></body></html>
