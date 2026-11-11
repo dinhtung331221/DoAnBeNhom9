@@ -1,61 +1,46 @@
-# TableTap - QR Table Ordering System
+# TableTap · Gọi món tại bàn bằng QR
 
-Ứng dụng PHP thuần cho phép khách quét QR tại bàn, xem menu, gửi món và yêu cầu thanh toán; nhân viên quản lý menu, bàn, QR và xử lý món trên màn hình bếp.
+Ứng dụng PHP và MariaDB dành cho quán cà phê hoặc nhà hàng. Khách quét QR bàn để xem menu, chọn size, ghi chú, gửi món và yêu cầu thanh toán. Màn hình bếp tự làm mới danh sách mỗi 5 giây khi đang mở. Thu ngân lập hóa đơn, áp mã giảm giá, đối chiếu VietQR và in phiếu.
 
-## Yêu cầu môi trường
+## Chạy trên XAMPP
 
-- PHP 7.0 trở lên với `pdo_mysql`, `fileinfo`, `mbstring`.
-- MariaDB/MySQL (đã kiểm thử MariaDB 10.4.32).
-- Apache bật `mod_rewrite` và `AllowOverride All` (XAMPP mặc định đáp ứng).
+1. Bật **MySQL** trong XAMPP. Trong phpMyAdmin, tạo database `qr_table_ordering_db` với collation `utf8mb4_unicode_ci`, chọn database đó và import `database/qr_table_ordering_db.sql`. Nếu database đang chạy đã có các bảng hóa đơn, tiếp tục dùng database đó.
+2. Mở PowerShell trong thư mục dự án. Sao chép `.env.example` thành `.env` và đổi `APP_URL` thành `http://localhost:8080`. Kiểm tra thông tin `DB_*` khớp MySQL. Dùng PHP 7.1 trở lên với `pdo_mysql`, `fileinfo` và `mbstring`.
+3. Chạy lệnh dưới đây và mở `http://localhost:8080/login`.
 
-## Cài đặt trên XAMPP
+```powershell
+C:\xampp\php\php.exe -S 0.0.0.0:8080 -t public router.php
+```
 
-1. Đặt repository tại `D:\xampp\htdocs\DoAnBeNhom9\DoAnBeNhom9`.
-2. Import `database/install.sql` bằng phpMyAdmin hoặc MySQL CLI.
-3. Chạy `database/migrations/20261106_week4.sql` nếu nâng cấp database cũ.
-4. Sao chép `.env.example` thành `.env` khi cần đổi URL hoặc tài khoản database. Không commit `.env`.
-5. Bật Apache và MySQL trong XAMPP.
-6. Mở `http://localhost/DoAnBeNhom9/DoAnBeNhom9/public/login`.
-
-Nếu thay đổi vị trí thư mục, cập nhật `APP_URL` trong `.env`.
+Để quét QR bàn bằng điện thoại, cho điện thoại và máy tính dùng cùng Wi-Fi, đổi `APP_URL` thành địa chỉ LAN của máy tính kèm cổng 8080, mở ứng dụng bằng URL đó và tạo lại QR bàn. `localhost` trên điện thoại trỏ về chính điện thoại. Khi đưa lên hosting, đặt thư mục public làm document root, bật rewrite và cấu hình APP_URL HTTPS, DB và QR_TOKEN_SECRET.
 
 ## Tài khoản demo
 
 | Vai trò | Tên đăng nhập | Mật khẩu |
 |---|---|---|
-| Admin | `admin` | `Admin@123` |
-| Manager | `manager` | `Manager@123` |
-| Cashier | `cashier` | `Cashier@123` |
-| Kitchen | `kitchen` | `Kitchen@123` |
-| Waiter | `waiter` | `Waiter@123` |
+| Quản trị | admin | Admin@123 |
+| Quản lý | manager | Manager@123 |
+| Thu ngân | cashier | Cashier@123 |
+| Bếp | kitchen | Kitchen@123 |
+| Phục vụ | waiter | Waiter@123 |
 
-Đăng ký công khai chỉ tạo tài khoản `customer`; client không thể tự gán vai trò nhân viên.
+Khách có thể đăng ký tài khoản khách hoặc gọi món trực tiếp sau khi quét QR bàn.
 
-## Điểm vào ứng dụng
+## Quy trình thanh toán
 
-- Web front controller: `public/index.php`.
-- API front controller: cũng qua `public/index.php`, prefix `/api/`.
-- PHP development server: `D:\xampp\php\php.exe -S localhost:8080 router.php`.
-- Schema đầy đủ: `database/install.sql`.
+1. Quản trị vào **Mã QR** để tạo mã cho bàn. Khách quét mã, gửi món và mở **Thanh toán → Yêu cầu thanh toán**.
+2. Bếp chuyển món sang **Sẵn sàng phục vụ**. Trong **Thu ngân**, chọn dòng món và nhập mã giảm giá nếu có. Chọn món từ nhiều bàn để gộp. Lập từng hóa đơn cho từng nhóm dòng món để tách. Hóa đơn chưa nhận tiền có thể hủy để chọn lại món.
+3. Sau khi lập, trang hóa đơn hiện VietQR của **TPBank · 79206033999 · TRAN KHAI**, kèm số tiền sau giảm và mã hóa đơn. Khách xem hóa đơn của phiên bàn trên màn hình Thanh toán. Với hóa đơn gộp nhiều bàn, thu ngân mở mã để khách quét.
+4. Thu ngân đối chiếu trên sao kê hoặc ứng dụng ngân hàng rồi nhập **mã giao dịch** và **số tiền thực nhận**. Hệ thống từ chối số tiền sai, mã giao dịch đã dùng và xác nhận lặp. Sau khi xác nhận, phiếu có nút **In / Lưu PDF**. Trong hộp thoại in, chọn **Save as PDF** để lưu file.
+5. Khi mọi món còn hiệu lực trong phiên đã được thanh toán, hệ thống đóng phiên và trả bàn về trạng thái sẵn sàng. Chỉ hóa đơn đã thanh toán được cộng vào doanh thu ngày.
 
-## Chức năng đã triển khai
-
-- Đăng ký, đăng nhập, đăng xuất, hash mật khẩu và session/CSRF.
-- Phân quyền backend cho Admin, Manager, Cashier, Kitchen, Waiter, Customer.
-- CRUD/ẩn danh mục, sản phẩm, size/giá; upload ảnh có kiểm tra MIME và dung lượng.
-- Quản lý bàn, khu vực, sức chứa, trạng thái và ngừng sử dụng.
-- Tạo/thu hồi QR theo từng bàn; token chỉ lưu dưới dạng SHA-256, có ngày hết hạn.
-- Menu responsive, chọn size, ghi chú, giỏ hàng, gửi món và gọi nhân viên/thanh toán.
-- Giá/tên món được lấy lại từ database và lưu snapshot trong transaction khi đặt món.
-- Màn hình bếp với luồng `pending -> preparing -> ready -> served` và lịch sử trạng thái.
-- Schema sẵn cho phiên bàn, hóa đơn gộp/tách, nhiều lần thanh toán, khuyến mãi và thông báo.
+VietQR dùng Quick Link và cần Internet để tải ảnh. Xác nhận nhận tiền do thu ngân thực hiện. Mã QR bàn mở thực đơn và mã VietQR chuyển khoản là hai mã riêng. Phiếu in là phiếu thanh toán nội bộ.
 
 ## Kiểm thử nhanh
 
-```powershell
-Get-ChildItem -Recurse -Filter *.php | ForEach-Object { D:\xampp\php\php.exe -l $_.FullName }
-D:\xampp\mysql\bin\mysql.exe -u root qr_table_ordering_db < database\migrations\20261106_week4.sql
-```
-
-Chi tiết thiết kế và tiêu chí nghiệm thu nằm trong `docs/requirements.md`, `docs/design.md` và `docs/test-cases.md`.
+- Khách thử mở trang Thu ngân và xác nhận hóa đơn. Hệ thống phải từ chối.
+- Gọi hai dòng món, chuyển cả hai sang Sẵn sàng, tạo hóa đơn cho một dòng. Dòng còn lại phải xuất hiện để lập hóa đơn thứ hai.
+- Lập hóa đơn cho các món của hai bàn để kiểm tra gộp. Thử mã giảm giá còn hiệu lực và so sánh số tiền trên hóa đơn với số tiền trong app ngân hàng trước khi xác nhận.
+- Thử nhập số tiền sai, thanh toán hai lần và dùng lại mã giao dịch. Doanh thu chỉ tăng một lần sau khi thu ngân xác nhận thành công.
+- Mở phiếu đã thanh toán và dùng bản xem trước in để kiểm tra PDF.
 
