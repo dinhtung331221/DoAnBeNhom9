@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="<?= asset('assets/css/app.css') ?>">
+    <link rel="stylesheet" href="<?= asset('assets/css/app.css?v=20261113') ?>">
 </head>
 <body class="app-shell">
 <aside class="sidebar" id="sidebar">

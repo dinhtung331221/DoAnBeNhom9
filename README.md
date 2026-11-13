@@ -28,6 +28,7 @@ Nếu thay đổi vị trí thư mục, cập nhật `APP_URL` trong `.env`.
 | Cashier | `cashier` | `Cashier@123` |
 | Kitchen | `kitchen` | `Kitchen@123` |
 | Waiter | `waiter` | `Waiter@123` |
+| Customer | `customer` | `Customer@123` |
 
 Đăng ký công khai chỉ tạo tài khoản `customer`; client không thể tự gán vai trò nhân viên.
 

@@ -29,6 +29,7 @@ $routes = array(
         '' => array($pages, 'home'),
         'login' => array($auth, 'loginForm'),
         'register' => array($auth, 'registerForm'),
+        'customer' => array($pages, 'customer'),
         'dashboard' => array($pages, 'dashboard'),
         'admin/categories' => array($pages, 'categories'),
         'admin/products' => array($pages, 'products'),

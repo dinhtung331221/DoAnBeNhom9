@@ -1,4 +1,4 @@
-<section class="toolbar"><div class="toolbar-summary"><span class="summary-dot"></span>Mỗi bàn chỉ có một QR đang hoạt động</div><button class="button button-primary" data-open-modal="qrModal"><i data-lucide="qr-code"></i>Tạo QR mới</button></section>
+<section class="toolbar"><div class="toolbar-summary"><span class="summary-dot"></span>Mỗi bàn chỉ có một QR đang hoạt động</div><div class="toolbar-actions"><button class="button button-secondary" type="button" data-download-all-qr><i data-lucide="download"></i>Tải QR hoạt động</button><button class="button button-primary" data-open-modal="qrModal"><i data-lucide="qr-code"></i>Tạo QR mới</button></div></section>
 <section class="qr-grid">
 <?php if (!$qrCodes): ?><div class="empty-state content-panel"><i data-lucide="qr-code"></i><h2>Chưa có mã QR</h2><p>Tạo mã đầu tiên để khách có thể mở menu tại bàn.</p></div><?php endif; ?>
 <?php foreach ($qrCodes as $qr): ?>
@@ -6,7 +6,7 @@
         <div class="qr-canvas" data-qr-value="<?= e($qr['qr_image']) ?>" data-qr-id="<?= (int) $qr['id'] ?>"></div>
         <div class="qr-details"><div><span class="eyebrow"><?= e($qr['khu_vuc']) ?></span><h2><?= e($qr['ma_ban']) ?> · <?= e($qr['ten_ban']) ?></h2></div><span class="pill <?= $qr['trang_thai'] === 'active' ? 'pill-active' : 'pill-inactive' ?>"><?= $qr['trang_thai'] === 'active' ? 'Hoạt động' : 'Đã thu hồi' ?></span></div>
         <div class="qr-meta"><span>Tạo <?= e(date('d/m/Y H:i', strtotime($qr['ngay_tao']))) ?></span><span>Hết hạn <?= $qr['ngay_het_han'] ? e(date('d/m/Y', strtotime($qr['ngay_het_han']))) : 'Không giới hạn' ?></span></div>
-        <div class="card-actions"><button class="button button-secondary button-small" data-download-qr="<?= (int) $qr['id'] ?>" <?= $qr['trang_thai'] !== 'active' ? 'disabled' : '' ?>><i data-lucide="download"></i>Tải PNG</button><?php if ($qr['trang_thai'] === 'active'): ?><button class="icon-button danger" title="Thu hồi QR" data-api-action="qr/revoke" data-id="<?= (int) $qr['id'] ?>" data-confirm="Thu hồi QR này? Khách sẽ không thể tiếp tục sử dụng."><i data-lucide="ban"></i></button><?php endif; ?></div>
+        <div class="card-actions"><button class="button button-primary button-small" data-download-qr="<?= (int) $qr['id'] ?>" data-qr-name="<?= e($qr['ma_ban']) ?>" <?= $qr['trang_thai'] !== 'active' ? 'disabled' : '' ?>><i data-lucide="download"></i>Tải mã QR</button><?php if ($qr['trang_thai'] === 'active'): ?><button class="icon-button danger" title="Thu hồi QR" data-api-action="qr/revoke" data-id="<?= (int) $qr['id'] ?>" data-confirm="Thu hồi QR này? Khách sẽ không thể tiếp tục sử dụng."><i data-lucide="ban"></i></button><?php endif; ?></div>
     </article>
 <?php endforeach; ?>
 </section>

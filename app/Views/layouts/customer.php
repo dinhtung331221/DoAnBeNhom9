@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="<?= asset('assets/css/app.css') ?>">
+    <link rel="stylesheet" href="<?= asset('assets/css/app.css?v=20261113') ?>">
 </head>
 <body class="customer-shell" data-table-id="<?= isset($table) ? (int) $table['ban_id'] : 0 ?>">
     <?= $content ?>
@@ -16,6 +16,8 @@
     <script>window.APP_URL = <?= json_encode(app_config('url')) ?>;</script>
     <script src="<?= asset('assets/vendor/lucide.min.js') ?>"></script>
     <script src="<?= asset('assets/js/app.js') ?>"></script>
+    <script src="<?= asset('assets/vendor/jsqr.min.js') ?>"></script>
+    <script src="<?= asset('assets/js/customer.js?v=20261113') ?>"></script>
     <script src="<?= asset('assets/js/menu.js') ?>"></script>
 </body>
 </html>

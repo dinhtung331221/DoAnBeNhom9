@@ -132,8 +132,15 @@
     button.addEventListener('click', function () {
       var container = document.querySelector('[data-qr-id="' + button.dataset.downloadQr + '"]'); var canvas = container ? container.querySelector('canvas') : null;
       if (!canvas) { toast('QR chưa thể tải. Vui lòng kiểm tra kết nối thư viện.', 'error'); return; }
-      var link = document.createElement('a'); link.download = 'tabletap-qr-' + button.dataset.downloadQr + '.png'; link.href = canvas.toDataURL('image/png'); link.click();
+      var link = document.createElement('a'); link.download = 'tabletap-' + (button.dataset.qrName || ('qr-' + button.dataset.downloadQr)).toLowerCase() + '.png'; link.href = canvas.toDataURL('image/png'); link.click();
     });
+  });
+  var downloadAllQr = document.querySelector('[data-download-all-qr]');
+  if (downloadAllQr) downloadAllQr.addEventListener('click', function () {
+    var buttons = Array.prototype.slice.call(document.querySelectorAll('[data-download-qr]:not(:disabled)'));
+    if (!buttons.length) { toast('Chưa có mã QR đang hoạt động.', 'error'); return; }
+    buttons.forEach(function (button, index) { window.setTimeout(function () { button.click(); }, index * 350); });
+    toast('Đang tải ' + buttons.length + ' mã QR hoạt động.');
   });
 
   var sidebarButton = document.querySelector('[data-sidebar-toggle]');

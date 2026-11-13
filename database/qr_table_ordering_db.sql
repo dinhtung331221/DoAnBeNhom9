@@ -573,7 +573,8 @@ INSERT INTO `users` (`id`, `username`, `password_hash`, `ho_ten`, `email`, `so_d
 (3, 'manager', '$2y$10$rcaytynibtqSTTB9iUBpweQz8Gvjy.caHsUEM2jZYWuz/5Nucy0i2', 'Quản lý ca', 'manager@tabletap.local', NULL, 'manager', 1, '2026-11-06 16:04:52', '2026-11-06 16:04:52'),
 (4, 'cashier', '$2y$10$JBCVnQkPPFuPOHheIVLvj.SffKlaYNrwpnJgOvRzvhv/pAHeoEHzC', 'Thu ngân', 'cashier@tabletap.local', NULL, 'cashier', 1, '2026-11-06 16:04:52', '2026-11-06 16:04:52'),
 (5, 'kitchen', '$2y$10$tz66766nNoQm3BkTqpyeEOSiUzgB8biGzPDrzmZyxJVOVw0ZQ2t2y', 'Nhân viên bếp', 'kitchen@tabletap.local', NULL, 'kitchen', 1, '2026-11-06 16:04:52', '2026-11-06 16:04:52'),
-(6, 'waiter', '$2y$10$71IAjqSbeiHAsj3J8H7Ktezbmrdjg/fm3bIpORzWUHV98OkuAY18m', 'Nhân viên phục vụ', 'waiter@tabletap.local', NULL, 'waiter', 1, '2026-11-06 16:04:52', '2026-11-06 16:04:52');
+(6, 'waiter', '$2y$10$71IAjqSbeiHAsj3J8H7Ktezbmrdjg/fm3bIpORzWUHV98OkuAY18m', 'Nhân viên phục vụ', 'waiter@tabletap.local', NULL, 'waiter', 1, '2026-11-06 16:04:52', '2026-11-06 16:04:52'),
+(7, 'customer', '$2y$10$CNFwziuZY/smGOsk2u7rauCSUVu28Y/Roh/2smwQSm8qwxCqZzFli', 'Khách hàng demo', 'customer@tabletap.local', NULL, 'customer', 1, '2026-11-06 16:04:52', '2026-11-06 16:04:52');
 
 -- --------------------------------------------------------
 

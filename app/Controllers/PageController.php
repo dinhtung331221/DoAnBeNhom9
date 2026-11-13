@@ -12,11 +12,24 @@ class PageController
     public function home()
     {
         if (Auth::check()) {
-            header('Location: ' . url(Auth::hasRole('kitchen') ? 'kitchen' : 'dashboard'));
+            $destination = Auth::hasRole('customer') ? 'customer' : (Auth::hasRole('kitchen') ? 'kitchen' : 'dashboard');
+            header('Location: ' . url($destination));
         } else {
             header('Location: ' . url('login'));
         }
         exit;
+    }
+
+    public function customer()
+    {
+        Auth::requireRole(array('customer'));
+        $context = isset($_SESSION['table_context']) ? $_SESSION['table_context'] : null;
+        $table = $context ? (new QrService())->validate($context['token']) : null;
+        if ($table) {
+            header('Location: ' . url('menu?token=' . rawurlencode($context['token'])));
+            exit;
+        }
+        View::render('menu/customer-home', array('title' => 'Khách hàng'), 'layouts/customer');
     }
 
     public function dashboard()

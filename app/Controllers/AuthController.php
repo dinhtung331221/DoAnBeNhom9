@@ -12,8 +12,7 @@ class AuthController
     public function loginForm()
     {
         if (Auth::check()) {
-            header('Location: ' . url('dashboard'));
-            exit;
+            $this->redirect($this->destinationForRole(Auth::user()['role']));
         }
         View::render('auth/login', array('title' => 'Đăng nhập'), 'layouts/auth');
     }
@@ -31,7 +30,7 @@ class AuthController
             $this->redirect('login');
         }
         $role = Auth::user()['role'];
-        $this->redirect($role === 'kitchen' ? 'kitchen' : 'dashboard');
+        $this->redirect($this->destinationForRole($role));
     }
 
     public function registerForm()
@@ -95,6 +94,14 @@ class AuthController
     {
         header('Location: ' . url($path));
         exit;
+    }
+
+    private function destinationForRole($role)
+    {
+        if ($role === 'customer') {
+            return 'customer';
+        }
+        return $role === 'kitchen' ? 'kitchen' : 'dashboard';
     }
 }
 
