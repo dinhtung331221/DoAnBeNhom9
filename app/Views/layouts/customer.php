@@ -8,17 +8,17 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="<?= asset('assets/css/app.css?v=20261113') ?>">
+    <link rel="stylesheet" href="<?= versioned_asset('assets/css/app.css') ?>">
 </head>
 <body class="customer-shell" data-table-id="<?= isset($table) ? (int) $table['ban_id'] : 0 ?>">
     <?= $content ?>
     <div class="toast-region" id="toastRegion" aria-live="polite"></div>
     <script>window.APP_URL = <?= json_encode(app_config('url')) ?>;</script>
     <script src="<?= asset('assets/vendor/lucide.min.js') ?>"></script>
-    <script src="<?= asset('assets/js/app.js') ?>"></script>
+    <script src="<?= versioned_asset('assets/js/app.js') ?>"></script>
     <script src="<?= asset('assets/vendor/jsqr.min.js') ?>"></script>
-    <script src="<?= asset('assets/js/customer.js?v=20261113') ?>"></script>
-    <script src="<?= asset('assets/js/menu.js') ?>"></script>
+    <script src="<?= versioned_asset('assets/js/customer.js') ?>"></script>
+    <script src="<?= versioned_asset('assets/js/menu.js') ?>"></script>
 </body>
 </html>
 

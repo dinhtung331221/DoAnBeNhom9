@@ -20,6 +20,10 @@
 | ORDER-03 | Size/sản phẩm đã ẩn | API 422 và rollback toàn bộ đơn |
 | KITCHEN-01 | `pending -> preparing -> ready -> served` | Thành công và có lịch sử |
 | KITCHEN-02 | `pending -> served` | API 422 |
+| CASHIER-01 | Cashier đăng nhập | Chuyển thẳng đến `/cashier`, không dùng dashboard chung |
+| CASHIER-02 | Áp mã hợp lệ/không hợp lệ | Backend tính giảm đúng hoặc trả API 422 |
+| CASHIER-03 | Thanh toán đủ | Hóa đơn `paid`, phiên `closed`, bàn `available`, yêu cầu hoàn tất |
+| CASHIER-04 | Thanh toán một phần | Hóa đơn `partially_paid`, phiên và bàn vẫn mở |
 | UI-01 | 360px, 768px, 1440px | Không chồng chữ; menu, bảng và điều hướng dùng được |
 | ERROR-01 | Database ngắt kết nối | Thông báo chung, chi tiết chỉ ghi error log |
 

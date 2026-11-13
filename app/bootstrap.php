@@ -70,6 +70,13 @@ function asset($path)
     return url($path);
 }
 
+function versioned_asset($path)
+{
+    $relative = ltrim($path, '/');
+    $file = BASE_PATH . '/public/' . $relative;
+    return asset($relative) . '?v=' . (is_file($file) ? filemtime($file) : '1');
+}
+
 function e($value)
 {
     return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');

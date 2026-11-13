@@ -211,3 +211,31 @@ button { cursor: pointer; }
   .toolbar-actions { display: grid; grid-template-columns: 1fr 1fr; width: 100%; }
   .toolbar-actions .button { width: 100%; }
 }
+
+/* Cashier workspace */
+.cashier-workspace { display: grid; grid-template-columns: 330px minmax(0, 1fr); min-height: 650px; margin-bottom: 22px; overflow: hidden; background: var(--surface); border: 1px solid var(--line); border-radius: 7px; }
+.cashier-queue { padding: 22px 16px; background: #f0f3ef; border-right: 1px solid var(--line); }
+.cashier-section-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 0 5px 16px; }
+.cashier-section-heading h2 { margin: 3px 0 0; font-family: Newsreader, Georgia, serif; font-size: 24px; }
+.cashier-search { width: 100%; margin-bottom: 14px; }
+.cashier-session-list { display: grid; gap: 7px; max-height: 555px; overflow-y: auto; }
+.cashier-session { display: grid; grid-template-columns: 42px minmax(0, 1fr) auto; align-items: center; gap: 10px; width: 100%; padding: 12px; color: var(--ink); background: white; border: 1px solid transparent; border-radius: 5px; text-align: left; }
+.cashier-session:hover { border-color: #b8c8c0; }.cashier-session.is-active { color: white; background: var(--forest); border-color: var(--forest); }
+.cashier-table-code { display: grid; place-items: center; width: 40px; height: 40px; color: var(--forest); background: #e6f0eb; border-radius: 5px; font-size: 11px; font-weight: 800; }
+.cashier-session.is-active .cashier-table-code { color: white; background: rgba(255,255,255,.14); }
+.cashier-session-copy, .cashier-session-total { min-width: 0; }.cashier-session-copy strong, .cashier-session-copy small, .cashier-session-total strong, .cashier-session-total small { display: block; }
+.cashier-session-copy strong { overflow: hidden; font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }.cashier-session-copy small { margin-top: 3px; color: var(--muted); font-size: 9px; }.cashier-session.is-active small { color: #c6d8d0; }
+.cashier-session-total { text-align: right; }.cashier-session-total strong { font-size: 11px; white-space: nowrap; }.cashier-session-total small { margin-top: 4px; color: var(--coral); font-size: 8px; font-weight: 800; text-transform: uppercase; }
+.cashier-bill { min-width: 0; padding: 27px 30px; }.cashier-empty { display: grid; place-items: center; align-content: center; min-height: 580px; color: var(--muted); text-align: center; }.cashier-empty svg { width: 45px; height: 45px; }.cashier-empty h2 { margin: 12px 0 3px; font-family: Newsreader,Georgia,serif; }.cashier-empty p { margin: 0; font-size: 11px; }.is-hidden { display: none !important; }
+.bill-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; padding-bottom: 20px; border-bottom: 1px solid var(--line); }.bill-heading h2 { margin: 3px 0; font-family: Newsreader,Georgia,serif; font-size: 29px; }.bill-heading p { margin: 0; color: var(--muted); font-size: 10px; }
+.bill-items-wrap { margin-top: 12px; overflow-x: auto; }.bill-items { width: 100%; border-collapse: collapse; }.bill-items th { padding: 9px 8px; color: var(--muted); border-bottom: 1px solid var(--line); font-size: 9px; letter-spacing: .7px; text-align: right; text-transform: uppercase; }.bill-items th:first-child { text-align: left; }.bill-items td { padding: 12px 8px; border-bottom: 1px solid #edf0ed; font-size: 11px; text-align: right; }.bill-items td:first-child { text-align: left; }.bill-items td strong, .bill-items td small { display: block; }.bill-items td small { margin-top: 3px; color: var(--muted); font-size: 9px; }
+.cashier-controls { display: grid; grid-template-columns: minmax(230px, .8fr) minmax(260px, .65fr); gap: 30px; margin-top: 22px; padding: 20px; background: #f6f7f4; border-radius: 6px; }.cashier-inline-input { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 7px; }.promotion-result { margin: 8px 0 0; color: var(--muted); font-size: 9px; line-height: 1.5; }
+.bill-totals { display: grid; gap: 9px; }.bill-totals > div { display: flex; justify-content: space-between; color: var(--muted); font-size: 11px; }.bill-totals strong { color: var(--ink); }.bill-totals .discount-row strong { color: var(--coral); }.bill-totals .bill-grand-total { align-items: end; margin-top: 5px; padding-top: 12px; color: var(--ink); border-top: 1px solid var(--line); font-size: 12px; }.bill-grand-total strong { font-family: Newsreader,Georgia,serif; font-size: 27px; }
+.payment-panel { margin-top: 23px; padding-top: 22px; border-top: 1px solid var(--line); }.payment-methods { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 8px; }.payment-methods label { position: relative; }.payment-methods input { position: absolute; opacity: 0; }.payment-methods span { display: flex; align-items: center; justify-content: center; gap: 7px; min-height: 45px; padding: 8px; color: var(--muted); border: 1px solid var(--line); border-radius: 5px; font-size: 10px; font-weight: 700; }.payment-methods span svg { width: 16px; }.payment-methods input:checked + span { color: var(--forest); background: #eaf3ee; border-color: var(--forest); }
+.payment-entry { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 15px 0; }.cashier-history { margin-bottom: 0; }
+
+@media (max-width: 1100px) { .cashier-workspace { grid-template-columns: 280px minmax(0,1fr); }.payment-methods { grid-template-columns: 1fr 1fr; }.cashier-controls { grid-template-columns: 1fr; gap: 18px; } }
+@media (max-width: 760px) { .cashier-workspace { grid-template-columns: 1fr; }.cashier-queue { border-right: 0; border-bottom: 1px solid var(--line); }.cashier-session-list { display: flex; max-height: none; padding-bottom: 5px; overflow-x: auto; }.cashier-session { flex: 0 0 270px; }.cashier-bill { padding: 20px 15px; }.payment-entry { grid-template-columns: 1fr; }.cashier-stats { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 440px) { .cashier-stats { grid-template-columns: 1fr; }.payment-methods { grid-template-columns: 1fr 1fr; }.cashier-controls { padding: 14px; }.bill-heading h2 { font-size: 24px; } }
+.icon-button.mobile-menu { display: none; }
+@media (max-width: 900px) { .icon-button.mobile-menu { display: grid; } }

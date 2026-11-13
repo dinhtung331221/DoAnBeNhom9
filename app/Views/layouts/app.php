@@ -9,11 +9,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="<?= asset('assets/css/app.css?v=20261113') ?>">
+    <link rel="stylesheet" href="<?= versioned_asset('assets/css/app.css') ?>">
 </head>
 <body class="app-shell">
 <aside class="sidebar" id="sidebar">
-    <a class="brand" href="<?= url('dashboard') ?>"><span class="brand-mark">T</span><span>TableTap</span></a>
+    <?php $homePath = Auth::hasRole('cashier') ? 'cashier' : (Auth::hasRole('kitchen') ? 'kitchen' : 'dashboard'); ?>
+    <a class="brand" href="<?= url($homePath) ?>"><span class="brand-mark">T</span><span>TableTap</span></a>
     <nav class="sidebar-nav" aria-label="Điều hướng chính">
         <a class="nav-link" href="<?= url('dashboard') ?>" data-nav="dashboard"><i data-lucide="layout-dashboard"></i><span>Tổng quan</span></a>
         <?php if (Auth::hasRole(array('admin', 'manager'))): ?>
@@ -26,6 +27,9 @@
         <?php endif; ?>
         <?php if (Auth::hasRole(array('admin', 'manager', 'kitchen'))): ?>
             <a class="nav-link" href="<?= url('kitchen') ?>"><i data-lucide="chef-hat"></i><span>Màn hình bếp</span></a>
+        <?php endif; ?>
+        <?php if (Auth::hasRole(array('admin', 'manager', 'cashier'))): ?>
+            <a class="nav-link" href="<?= url('cashier') ?>"><i data-lucide="badge-dollar-sign"></i><span>Thu ngân</span></a>
         <?php endif; ?>
     </nav>
     <div class="sidebar-user">
@@ -53,7 +57,7 @@
 <div class="modal-backdrop" id="modalBackdrop" hidden></div>
 <script>window.APP_URL = <?= json_encode(app_config('url')) ?>;</script>
 <script src="<?= asset('assets/vendor/lucide.min.js') ?>"></script>
-<script src="<?= asset('assets/js/app.js') ?>"></script>
+<script src="<?= versioned_asset('assets/js/app.js') ?>"></script>
 </body>
 </html>
 

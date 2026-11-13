@@ -11,7 +11,7 @@ Hệ thống phục vụ một nhà hàng/quán cà phê, mỗi QR ánh xạ đ�
 | Customer | Quét QR, xem menu, chọn size/số lượng, ghi chú, gửi đơn, gọi nhân viên, yêu cầu thanh toán |
 | Waiter | Xem tổng quan bàn, đơn và yêu cầu phục vụ |
 | Kitchen | Xem món cần chế biến, chuyển trạng thái món theo thứ tự |
-| Cashier | Xem tổng quan bàn/đơn; schema đã chuẩn bị cho hóa đơn và nhiều lần thanh toán |
+| Cashier | Xem hàng đợi bàn, lập hóa đơn, áp mã khuyến mãi, ghi nhận nhiều lần thanh toán và đóng phiên bàn |
 | Manager | Toàn bộ vận hành và CRUD menu/bàn/QR |
 | Admin | Toàn bộ quyền quản trị |
 

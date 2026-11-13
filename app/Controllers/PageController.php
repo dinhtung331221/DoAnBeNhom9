@@ -6,13 +6,14 @@ use App\Core\Auth;
 use App\Core\Database;
 use App\Core\View;
 use App\Services\QrService;
+use App\Services\InvoiceService;
 
 class PageController
 {
     public function home()
     {
         if (Auth::check()) {
-            $destination = Auth::hasRole('customer') ? 'customer' : (Auth::hasRole('kitchen') ? 'kitchen' : 'dashboard');
+            $destination = Auth::hasRole('customer') ? 'customer' : (Auth::hasRole('kitchen') ? 'kitchen' : (Auth::hasRole('cashier') ? 'cashier' : 'dashboard'));
             header('Location: ' . url($destination));
         } else {
             header('Location: ' . url('login'));
@@ -59,6 +60,18 @@ class PageController
              WHERE y.trang_thai IN ('pending','processing') ORDER BY y.ngay_tao DESC LIMIT 8"
         )->fetchAll();
         View::render('dashboard/index', compact('stats', 'tables', 'orders', 'requests') + array('title' => 'Tổng quan'));
+    }
+
+    public function cashier()
+    {
+        Auth::requireRole(array('admin', 'manager', 'cashier'));
+        $data = (new InvoiceService())->dashboardData();
+        View::render('cashier/index', array(
+            'title' => 'Thu ngân',
+            'sessions' => $data['sessions'],
+            'stats' => $data['stats'],
+            'recent' => $data['recent'],
+        ));
     }
 
     public function categories()

@@ -101,7 +101,10 @@ class AuthController
         if ($role === 'customer') {
             return 'customer';
         }
-        return $role === 'kitchen' ? 'kitchen' : 'dashboard';
+        if ($role === 'kitchen') {
+            return 'kitchen';
+        }
+        return $role === 'cashier' ? 'cashier' : 'dashboard';
     }
 }
 

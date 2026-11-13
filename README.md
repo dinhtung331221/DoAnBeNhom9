@@ -49,6 +49,7 @@ Nếu thay đổi vị trí thư mục, cập nhật `APP_URL` trong `.env`.
 - Menu responsive, chọn size, ghi chú, giỏ hàng, gửi món và gọi nhân viên/thanh toán.
 - Giá/tên món được lấy lại từ database và lưu snapshot trong transaction khi đặt món.
 - Màn hình bếp với luồng `pending -> preparing -> ready -> served` và lịch sử trạng thái.
+- Màn hình thu ngân riêng: hàng đợi bàn, chi tiết hóa đơn, áp mã khuyến mãi, thanh toán một phần hoặc toàn bộ và tự giải phóng bàn.
 - Schema sẵn cho phiên bàn, hóa đơn gộp/tách, nhiều lần thanh toán, khuyến mãi và thông báo.
 
 ## Kiểm thử nhanh

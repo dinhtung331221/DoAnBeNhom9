@@ -10,6 +10,7 @@ use App\Core\Validator;
 use App\Services\OrderService;
 use App\Services\QrService;
 use App\Services\UploadService;
+use App\Services\InvoiceService;
 
 class ApiController
 {
@@ -31,6 +32,8 @@ class ApiController
             'orders' => 'createOrder',
             'table-requests' => 'createTableRequest',
             'kitchen/status' => 'updateKitchenStatus',
+            'cashier/quote' => 'cashierQuote',
+            'cashier/pay' => 'cashierPay',
         );
         if (!isset($routes[$path])) {
             Response::error('API không tồn tại.', 404);
@@ -273,6 +276,34 @@ class ApiController
         try {
             (new OrderService())->updateItemStatus((int) $request->input('item_id', 0), (string) $request->input('status', ''));
             Response::success(array(), 'Đã cập nhật trạng thái món.');
+        } catch (\RuntimeException $exception) {
+            Response::error($exception->getMessage(), 422);
+        }
+    }
+
+    private function cashierQuote(Request $request)
+    {
+        $this->requireRole(array('admin', 'manager', 'cashier'));
+        try {
+            $quote = (new InvoiceService())->quote((int) $request->input('session_id', 0), (string) $request->input('promotion_code', ''));
+            Response::success($quote, $quote['promotion'] ? 'Đã áp dụng mã khuyến mãi.' : 'Đã cập nhật hóa đơn.');
+        } catch (\RuntimeException $exception) {
+            Response::error($exception->getMessage(), 422);
+        }
+    }
+
+    private function cashierPay(Request $request)
+    {
+        $this->requireRole(array('admin', 'manager', 'cashier'));
+        try {
+            $result = (new InvoiceService())->pay(
+                (int) $request->input('session_id', 0),
+                (string) $request->input('promotion_code', ''),
+                (string) $request->input('method', ''),
+                $request->input('amount', null),
+                (string) $request->input('note', '')
+            );
+            Response::success($result, $result['status'] === 'paid' ? 'Thanh toán hoàn tất. Bàn đã được giải phóng.' : 'Đã ghi nhận thanh toán một phần.');
         } catch (\RuntimeException $exception) {
             Response::error($exception->getMessage(), 422);
         }
